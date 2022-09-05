@@ -1,12 +1,17 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function Weather() {
   
+  const [weatherData,setWeatherData] = useState<any>()
+
+  /* Openweatherapp free planda günlük data çekemediğim için burda kaldı */
   /* 46c5803c98e52b01848f7d62ea9f0fb1 */
+console.log(weatherData);
 
   useEffect(() => {
-    (async () => {
+
+  (async () =>{
       const response = await axios(
         "https://api.openweathermap.org/geo/1.0/direct?q=istanbul&limit=5&appid=46c5803c98e52b01848f7d62ea9f0fb1"
       );
@@ -14,11 +19,12 @@ export function Weather() {
       const weather = await axios(
         `https://api.openweathermap.org/data/2.5/forecast?cnt=7&lat=${response.data[0].lat}&lon=${response.data[0].lon}&appid=46c5803c98e52b01848f7d62ea9f0fb1`
       );
+      setWeatherData(weather.data)
+  })()
 
-      console.log(weather);
-      
-    })();
-  }, []);
+},
+  []);
+
 
   return (
     <div className="dropdown show">
@@ -46,5 +52,5 @@ export function Weather() {
         </a>
       </div>
     </div>
-  );
+  )
 }
