@@ -1,32 +1,24 @@
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useEffect } from "react";
 
 export function Weather() {
-  const [data, setData] = useState({
-    lat: Number,
-    lon: Number,
-    name: String,
-  });
-
-
+  
   /* 46c5803c98e52b01848f7d62ea9f0fb1 */
-  async function fetchDetails() {
-    const response = await fetch(
-      "http://api.openweathermap.org/geo/1.0/direct?q=istanbul&limit=5&appid=46c5803c98e52b01848f7d62ea9f0fb1"
-    );
-    const items = await response.json();
-    setData({
-      lat: items[0].lat,
-      lon: items[0].lon,
-      name: items[0].name,
-    });
 
-    const weather = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?cnt=7&lat=${data.lat}&lon=${data.lon}&appid=46c5803c98e52b01848f7d62ea9f0fb1`
-    );
-    const weathers = await weather.json();
-    console.log(weathers);
-  }
-fetchDetails()
+  useEffect(() => {
+    (async () => {
+      const response = await axios(
+        "https://api.openweathermap.org/geo/1.0/direct?q=istanbul&limit=5&appid=46c5803c98e52b01848f7d62ea9f0fb1"
+      );
+
+      const weather = await axios(
+        `https://api.openweathermap.org/data/2.5/forecast?cnt=7&lat=${response.data[0].lat}&lon=${response.data[0].lon}&appid=46c5803c98e52b01848f7d62ea9f0fb1`
+      );
+
+      console.log(weather);
+      
+    })();
+  }, []);
 
   return (
     <div className="dropdown show">
